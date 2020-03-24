@@ -8,6 +8,13 @@ die() {
 }
 
 main() {
+  if [[ ! -s "/home/dev/.local/share/systemd/user/update_dev.service" ]]; then
+    mkdir -p /home/dev/.local/share/systemd/user
+    cp update_dev.service /home/dev/.local/share/systemd/user/update_dev.service
+    systemctl --user enable update_dev.service
+    die "Service was enabled. Reboot is needed."
+  fi
+
   if [[ -s "go.sh" ]]; then
     chmod u+x go.sh
   else
