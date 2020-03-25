@@ -31,6 +31,7 @@ install_go() {
     clear
   fi
 
+  source /home/dev/.gvm/scripts/gvm
   if [[ ! -s "/home/dev/.gvm/gos/go${GO_VERSION}/bin/go" ]]; then
     while :
     do
@@ -52,8 +53,6 @@ install_go() {
     read answer
     clear
   fi
-
-  source /home/dev/.gvm/scripts/gvm
 }
 
 run_go() {
