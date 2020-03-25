@@ -4,14 +4,16 @@
   "version": "2.0",
   "updates": [
     {
-      "id": "0",
-      "description": "Hello World",
+      "id": 0,
+      "name": "Hello World",
+      "description": "Testing upgration system. Some words.......",
       "fileName": "hello_world.sh",
       "publishTime": "2020-03-24T19:00:00Z"
     },
     {
-      "id": "1",
-      "description": "Hello World 2",
+      "id": 1,
+      "name": "Hello World 2",
+      "description": "Testing upgration system. Some words.......",
       "fileName": "hello_world_2.sh",
       "publishTime": "2020-03-24T20:00:00Z"
     }

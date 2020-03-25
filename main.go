@@ -4,6 +4,7 @@ import (
   "fmt"
   "log"
   "time"
+  "os"
   "os/exec"
   "io/ioutil"
   "encoding/json"
@@ -17,27 +18,134 @@ type JsonData struct {
 }
 
 type Update struct {
-  ID          string    `json:"id"`
+  ID          int       `json:"id"`
+  Name        string    `json:"name"`
   Description string    `json:"description"`
   FileName    string    `json:"fileName"`
   PublishTime time.Time `json:"publishTime"`
 }
 
+type LastUpdate struct {
+	Value  int       `json:"update"`
+	Time   time.Time `json:"time"`
+}
+
 func main() {
-  data, err := ioutil.ReadFile("./updates/updates.json")
-  if err != nil {
-    log.Fatal("Error occur while opening updates.json file.")
+  var jsonData JsonData
+  var lastUpdate LastUpdate
+  readJsonData(&jsonData)
+  readLastUpdate(&lastUpdate)
+  update(jsonData, lastUpdate)
+}
+
+func update(jsonData JsonData, lastUpdate LastUpdate) {
+  clear()
+  jsonLastUpdate := -1
+  if len(jsonData.Updates) > 0 {
+    jsonLastUpdate = jsonData.Updates[len(jsonData.Updates) - 1].ID
   }
 
-  jsonData := JsonData{}
-  json.Unmarshal(data, &jsonData)
+  if lastUpdate.Value < jsonLastUpdate {
+    clear()
+    out:
+    for {
+      fmt.Printf("Last update time: \"%v\" \n", lastUpdate.Time.Format("January 2, 2006, 15:04"))
+      fmt.Printf("You have %v new updates.\n", jsonLastUpdate - lastUpdate.Value)
+      fmt.Printf("\nDo you want to upgrade your system? [Y/N] ")
+      var answer string
+      fmt.Scan(&answer)
+      switch answer {
+      case "y", "Y":
+        break out
+      case "n", "N":
+        fmt.Println("Okay. Update service is cancelled.")
+        os.Exit(444)
+      default:
+        clear()
+        fmt.Println("(!) Please use only Y or N")
+      }
+    }
+    upgrade(jsonData.Updates)
+  } else {
+    fmt.Printf("Last update time: \"%v\" \n", lastUpdate.Time.Format("January 2, 2006, 15:04"))
+    fmt.Printf("You have %v new updates.\n", jsonLastUpdate - lastUpdate.Value)
+    fmt.Println("System is up to date.")
+  }
+}
 
-  for _, update := range jsonData.Updates {
+func upgrade(updates []Update) {
+  for _, update := range updates {
+    clear()
+    out:
+    for {
+      fmt.Printf("Name: %v\nDescription: %v\nPublish Time: %v\n", update.Name,
+                                                                  update.Description,
+                                                                  update.PublishTime.Format("January 2, 2006, 15:04"))
+      fmt.Printf("\nDo you want to run this upgration? [Y/N] ")
+      var answer string
+      fmt.Scan(&answer)
+      switch answer {
+      case "y", "Y":
+        break out
+      case "n", "N":
+        fmt.Println("Okay. Update service is cancelled.")
+        os.Exit(444)
+      default:
+        clear()
+        fmt.Println("(!) Please use only Y or N")
+      }
+    }
+
     out, err := exec.Command("/bin/bash", "./updates/" + update.FileName).Output()
     if err != nil {
-        fmt.Printf("%s", err)
+      fmt.Printf("%s", err)
     }
     output := string(out[:])
-    fmt.Print(output)
+    fmt.Println("Running upgration was completed.")
+    fmt.Printf("\nOutput: %v\n", output)
+
+    writeLastUpdate(update.ID)
+
+    fmt.Printf("[ Push enter to continue ] ")
+    fmt.Scanln()
   }
+}
+
+func writeLastUpdate(id int) {
+  lastUpdate := &LastUpdate{
+    Value: id,
+    Time: time.Now(),
+  }
+  lastUpdateJson, _ := json.MarshalIndent(lastUpdate, "", "  ")
+  ioutil.WriteFile("./updates/last_update.json", lastUpdateJson, 0644)
+}
+
+func readLastUpdate(lastUpdate *LastUpdate) {
+  data, err := ioutil.ReadFile("./updates/last_update.json")
+  if err != nil {
+    // Creates json file if it do not exist.
+    lastUpdate := &LastUpdate{
+      Value: -1,
+      Time: time.Now(),
+    }
+    lastUpdateJson, _ := json.MarshalIndent(lastUpdate, "", "  ")
+    ioutil.WriteFile("./updates/last_update.json", lastUpdateJson, 0644)
+  } else {
+    json.Unmarshal(data, lastUpdate)
+  }
+}
+
+func readJsonData(jsonData *JsonData) {
+  data, err := ioutil.ReadFile("./updates/updates.json")
+  if err != nil {
+    log.Fatal("Error occur while reading \"updates.json\" file.")
+  }
+
+  json.Unmarshal(data, jsonData)
+}
+
+func clear() {
+  cmd := exec.Command("clear")
+  cmd.Stdout = os.Stdout
+  cmd.Run()
 }
