@@ -6,7 +6,7 @@ die() {
 }
 
 main() {
-  echo "UID" $UID
+  echo "This operation is run by" `whoami`
 }
 
 main

@@ -6,7 +6,7 @@ die() {
 }
 
 main() {
-  whoami
+  echo "This operation is run by" `whoami`
 }
 
 main

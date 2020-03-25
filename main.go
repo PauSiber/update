@@ -96,18 +96,22 @@ func upgrade(updates []Update) {
       }
     }
 
+    fmt.Printf("\nUpgration is started.\n")
+    fmt.Printf("------------------------------\n")
     cmd := exec.Command("sudo", "/bin/bash", "updates/" + update.FileName )
     cmd.Stderr = os.Stderr
     cmd.Stdout = os.Stdout
     cmd.Stdin = os.Stdin
     cmd.Run()
-    fmt.Println("Running upgration was completed.")
+    fmt.Printf("\n------------------------------\n\n")
+    fmt.Println("Running upgration is completed.")
 
     writeLastUpdate(update.ID)
 
     fmt.Printf("[ Push enter to continue ] ")
     fmt.Scanln()
   }
+  os.Exit(0)
 }
 
 func writeLastUpdate(id int) {
@@ -123,9 +127,10 @@ func readLastUpdate(lastUpdate *LastUpdate) {
   data, err := ioutil.ReadFile("./updates/last_update.json")
   if err != nil {
     // Creates json file if it do not exist.
+    currentTime := time.Now()
     lastUpdate := &LastUpdate{
       Value: -1,
-      Time: time.Now(),
+      Time: currentTime,
     }
     lastUpdateJson, _ := json.MarshalIndent(lastUpdate, "", "  ")
     ioutil.WriteFile("./updates/last_update.json", lastUpdateJson, 0644)
