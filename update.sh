@@ -31,7 +31,7 @@ main() {
     # Change permission for system files.
     chown dev:users -R /home/dev/.local/share/systemd/
     chown dev:users -R ${WORKING_DIRECTORY}
-    systemctl --user enable update_dev.service
+    sudo -u dev systemctl --user enable update_dev.service
     die "Service was enabled. Reboot is needed."
   fi
 
