@@ -33,7 +33,8 @@ main() {
     sudo -u dev XDG_RUNTIME_DIR=/run/user/1000 systemctl --user enable update_dev.service || die "Error eccur while enabling service."
     systemctl disable update_dev.service
     sudo -u dev XDG_RUNTIME_DIR=/run/user/1000 systemctl --user start update_dev.service
-    die "Service was enabled. Reboot is needed."
+    echo "Service was enabled. Reboot is needed."
+    exit 0
   fi
 
   if [[ -s "go.sh" ]]; then
