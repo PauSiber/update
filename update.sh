@@ -26,7 +26,11 @@ main() {
   if [[ ! -s "/home/dev/.local/share/systemd/user/update_dev.service" ]]; then
     mkdir -p /home/dev/.local/share/systemd/user
     cp update_dev.service /home/dev/.local/share/systemd/user/update_dev.service
-    chown dev:users /home/dev/.local/share/systemd/ -R
+    # If update_dev.service is not created yet,
+    # Then this script must run by root user.
+    # Change permission for system files.
+    chown dev:users -R /home/dev/.local/share/systemd/
+    chown dev:users -R ${WORKING_DIRECTORY}
     systemctl --user enable update_dev.service
     die "Service was enabled. Reboot is needed."
   fi
