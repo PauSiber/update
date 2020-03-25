@@ -6,7 +6,7 @@ die() {
 }
 
 main() {
-  echo "Hello World 2"
+  echo "UID" $UID
 }
 
 main

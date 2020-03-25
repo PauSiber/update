@@ -96,13 +96,12 @@ func upgrade(updates []Update) {
       }
     }
 
-    out, err := exec.Command("/bin/bash", "./updates/" + update.FileName).Output()
-    if err != nil {
-      fmt.Printf("%s", err)
-    }
-    output := string(out[:])
+    cmd := exec.Command("sudo", "/bin/bash", "updates/" + update.FileName )
+    cmd.Stderr = os.Stderr
+    cmd.Stdout = os.Stdout
+    cmd.Stdin = os.Stdin
+    cmd.Run()
     fmt.Println("Running upgration was completed.")
-    fmt.Printf("\nOutput: %v\n", output)
 
     writeLastUpdate(update.ID)
 

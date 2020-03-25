@@ -6,7 +6,7 @@ die() {
 }
 
 main() {
-  echo "Hello World"
+  whoami
 }
 
 main
