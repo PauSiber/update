@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 GO_VERSION="1.14"
-WORKING_DIRECTORY="/home/dev/Desktop/update"
+WORKING_DIRECTORY="/home/dev/.update/"
 
 die() {
   echo "$*" >&2
@@ -31,7 +31,7 @@ install_go() {
     clear
   fi
 
-  if [[ ! -e "/home/dev/.gvm/gos/go${GO_VERSION}/bin/go" ]]; then
+  if [[ ! -s "/home/dev/.gvm/gos/go${GO_VERSION}/bin/go" ]]; then
     while :
     do
       echo ""
