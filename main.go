@@ -67,7 +67,7 @@ func update(jsonData JsonData, lastUpdate LastUpdate) {
         fmt.Println("(!) Please use only Y or N")
       }
     }
-    upgrade(jsonData.Updates)
+    upgrade(jsonData.Updates[lastUpdate.Value+1:])
   } else {
     banner()
     fmt.Printf("Last update time: \"%v\" \n", lastUpdate.Time.Format("January 2, 2006, 15:04"))
