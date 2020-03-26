@@ -46,12 +46,17 @@ func update(jsonData JsonData, lastUpdate LastUpdate) {
     jsonLastUpdate = jsonData.Updates[len(jsonData.Updates) - 1].ID
   }
 
+  lastUpdateTime := "N/A"
+  if lastUpdate.Value >= 0 {
+    lastUpdateTime = lastUpdate.Time.Format("January 2, 2006, 15:04")
+  }
+
   if lastUpdate.Value < jsonLastUpdate {
     clear()
     out:
     for {
       banner()
-      fmt.Printf("Last update time: \"%v\" \n", lastUpdate.Time.Format("January 2, 2006, 15:04"))
+      fmt.Printf("Last update time: \"%v\" \n", lastUpdateTime)
       fmt.Printf("You have %v new updates.\n", jsonLastUpdate - lastUpdate.Value)
       fmt.Printf("\nDo you want to upgrade your system? [Y/N] ")
       var answer string
@@ -131,11 +136,8 @@ func readLastUpdate(lastUpdate *LastUpdate) {
   data, err := ioutil.ReadFile("./updates/last_update.json")
   if err != nil {
     // Creates json file if it do not exist.
-    currentTime := time.Now()
-    lastUpdate := &LastUpdate{
-      Value: -1,
-      Time: currentTime,
-    }
+    // lastUpdate.Value = -1
+    lastUpdate.Time = time.Now()
     lastUpdateJson, _ := json.MarshalIndent(lastUpdate, "", "  ")
     ioutil.WriteFile("./updates/last_update.json", lastUpdateJson, 0644)
   } else {
