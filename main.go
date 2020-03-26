@@ -7,6 +7,7 @@ import (
   "os"
   "os/exec"
   "strings"
+  "bufio"
   "io/ioutil"
   "encoding/json"
 )
@@ -65,14 +66,17 @@ func update(jsonData JsonData, lastUpdate LastUpdate) {
       case "y", "Y":
         break out
       case "n", "N":
-        fmt.Println("Okay. Update service is cancelled.")
-        os.Exit(444)
+        fmt.Println("\nOkay. Update service is cancelled.")
+        os.Exit(1)
       default:
         clear()
         fmt.Println("(!) Please use only Y or N")
       }
     }
     upgrade(jsonData.Updates[lastUpdate.Value+1:])
+    clear()
+    banner()
+    fmt.Println("All updates are done.\nYour system is up to date.")
   } else {
     banner()
     fmt.Printf("Last update time: \"%v\" \n", lastUpdate.Time.Format("January 2, 2006, 15:04"))
@@ -87,9 +91,11 @@ func upgrade(updates []Update) {
     out:
     for {
       banner()
-      fmt.Printf("Name: %v\nDescription: %v\nPublish Time: %v\n", update.Name,
+      fmt.Printf("Name: %v\nDescription: %v\nPublish Time: %v\n\n", update.Name,
                                                                   update.Description,
                                                                   update.PublishTime.Format("January 2, 2006, 15:04"))
+
+      showMeCode("updates/" + update.FileName)
       fmt.Printf("\nDo you want to run this upgration? [Y/N] ")
       var answer string
       fmt.Scan(&answer)
@@ -97,8 +103,8 @@ func upgrade(updates []Update) {
       case "y", "Y":
         break out
       case "n", "N":
-        fmt.Println("Okay. Update service is cancelled.")
-        os.Exit(444)
+        fmt.Println("\nOkay. Update service is cancelled.")
+        os.Exit(1)
       default:
         clear()
         fmt.Println("(!) Please use only Y or N")
@@ -106,21 +112,36 @@ func upgrade(updates []Update) {
     }
 
     fmt.Printf("\nUpgration is started.\n")
-    fmt.Printf("------------------------------\n")
+    fmt.Printf("--------------------------------------\n")
     cmd := exec.Command("sudo", "/bin/bash", "updates/" + update.FileName )
     cmd.Stderr = os.Stderr
     cmd.Stdout = os.Stdout
     cmd.Stdin = os.Stdin
     cmd.Run()
-    fmt.Printf("\n------------------------------\n\n")
+    fmt.Printf("\n--------------------------------------\n")
     fmt.Println("Running upgration is completed.")
-
     writeLastUpdate(update.ID)
-
-    fmt.Printf("[ Push enter to continue ] ")
+    fmt.Printf("\n[ Push enter to continue ] ")
     fmt.Scanln()
   }
-  os.Exit(0)
+}
+
+func showMeCode(path string) {
+  file, err := os.Open(path)
+  if err != nil {
+    log.Fatal("Error occur")
+  }
+  defer file.Close()
+
+  fmt.Println("\t -----------")
+  fmt.Println("\t|  Code:")
+  fmt.Println("\t|")
+  scanner := bufio.NewScanner(file)
+  for scanner.Scan() {
+    fmt.Println("\t|\t" + scanner.Text())
+  }
+  fmt.Println("\t|")
+  fmt.Println("\t -----------")
 }
 
 func writeLastUpdate(id int) {
