@@ -6,6 +6,7 @@ import (
   "time"
   "os"
   "os/exec"
+  "strings"
   "io/ioutil"
   "encoding/json"
 )
@@ -49,6 +50,7 @@ func update(jsonData JsonData, lastUpdate LastUpdate) {
     clear()
     out:
     for {
+      banner()
       fmt.Printf("Last update time: \"%v\" \n", lastUpdate.Time.Format("January 2, 2006, 15:04"))
       fmt.Printf("You have %v new updates.\n", jsonLastUpdate - lastUpdate.Value)
       fmt.Printf("\nDo you want to upgrade your system? [Y/N] ")
@@ -67,6 +69,7 @@ func update(jsonData JsonData, lastUpdate LastUpdate) {
     }
     upgrade(jsonData.Updates)
   } else {
+    banner()
     fmt.Printf("Last update time: \"%v\" \n", lastUpdate.Time.Format("January 2, 2006, 15:04"))
     fmt.Printf("You have %v new updates.\n", jsonLastUpdate - lastUpdate.Value)
     fmt.Println("System is up to date.")
@@ -78,6 +81,7 @@ func upgrade(updates []Update) {
     clear()
     out:
     for {
+      banner()
       fmt.Printf("Name: %v\nDescription: %v\nPublish Time: %v\n", update.Name,
                                                                   update.Description,
                                                                   update.PublishTime.Format("January 2, 2006, 15:04"))
@@ -146,6 +150,25 @@ func readJsonData(jsonData *JsonData) {
   }
 
   json.Unmarshal(data, jsonData)
+}
+
+func banner() {
+  banner := `  ____   _   _   _ ____ ___ ____  _____ ____       ____  _______     __` + "\n" +
+            ` |  _ \ / \ | | | / ___|_ _| __ )| ____|  _ \     |  _ \| ____\ \   / /` + "\n" +
+            ` | |_) / _ \| | | \___ \| ||  _ \|  _| | |_) |    | | | |  _|  \ \ / /` + "\n" +
+            ` |  __/ ___ \ |_| |___) | || |_) | |___|  _ <     | |_| | |___  \ V /` + "\n" +
+            ` |_| /_/   \_\___/|____/___|____/|_____|_| \_\    |____/|_____|  \_/` + "\n"
+  fmt.Println(banner)
+  fmt.Printf("\t\t\t- Update Service %v - \n\n", version())
+}
+
+func version() string {
+  data, err := ioutil.ReadFile("version.txt")
+  if err != nil {
+    return ""
+  } else {
+    return strings.TrimSpace(string(data))
+  }
 }
 
 func clear() {
