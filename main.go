@@ -73,7 +73,7 @@ func update(jsonData JsonData, lastUpdate LastUpdate) {
         fmt.Println("(!) Please use only Y or N")
       }
     }
-    upgrade(jsonData.Updates[lastUpdate.Value+1:])
+    upgrade(jsonData.Updates[lastUpdate.Value+1:], false)
     clear()
     banner()
     fmt.Println("All updates are done.\nYour system is up to date.")
@@ -85,21 +85,30 @@ func update(jsonData JsonData, lastUpdate LastUpdate) {
   }
 }
 
-func upgrade(updates []Update) {
-  for _, update := range updates {
+func upgrade(updates []Update, codeFlag bool) {
+  lastCountValue := 0
+  cancel:
+  for i, update := range updates {
     clear()
     out:
     for {
       banner()
-      fmt.Printf("Name: %v\nDescription: %v\nPublish Time: %v\n\n", update.Name,
+      fmt.Printf("Name: %v\nDescription: %v\nPublish Time: %v\n", update.Name,
                                                                   update.Description,
                                                                   update.PublishTime.Format("January 2, 2006, 15:04"))
 
-      showMeCode("updates/" + update.FileName)
-      fmt.Printf("\nDo you want to run this upgration? [Y/N] ")
+      if codeFlag {
+        showMeCode("updates/" + update.FileName)
+        codeFlag = false
+      }
+      fmt.Printf("\nDo you want to run this upgration? [S/Y/N] ")
       var answer string
       fmt.Scan(&answer)
       switch answer {
+      case "s", "S":
+        codeFlag = true
+        lastCountValue = i
+        break cancel
       case "y", "Y":
         break out
       case "n", "N":
@@ -124,6 +133,9 @@ func upgrade(updates []Update) {
     fmt.Printf("\n[ Push enter to continue ] ")
     fmt.Scanln()
   }
+  if codeFlag {
+    upgrade(updates[lastCountValue:], true)
+  }
 }
 
 func showMeCode(path string) {
@@ -133,7 +145,7 @@ func showMeCode(path string) {
   }
   defer file.Close()
 
-  fmt.Println("\t -----------")
+  fmt.Println("\n\t -----------")
   fmt.Println("\t|  Code:")
   fmt.Println("\t|")
   scanner := bufio.NewScanner(file)
