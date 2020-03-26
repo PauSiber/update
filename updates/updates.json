@@ -16,6 +16,13 @@
       "description": "Testing upgration system. Some words.......",
       "fileName": "hello_world_2.sh",
       "publishTime": "2020-03-24T20:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Testing - A new update",
+      "description": "New update update update",
+      "fileName": "new_update.sh",
+      "publishTime": "2020-03-24T20:00:00Z"
     }
   ]
 }
