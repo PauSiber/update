@@ -13,11 +13,16 @@ install_go() {
     while :
     do
       echo ""
+      echo ""
+      echo "Installing Update System..."
+      sleep 3
+      echo ""
+      echo -e "Update system needs go environment."
       echo -en "Gvm will be installed. Do you confirm? [y/n] "
       read answer
       echo ""
       case "$answer" in
-        [yY] ) echo -e "Installation was started.\nPlease do not cancel the operation.\nOtherwise you system can be broke." && break ;;
+        [yY] ) echo -e "Installation was started.\nPlease do not cancel the operation.\nOtherwise your system can be broke." && break ;;
         [nN] ) die "Okay. Update service is cancelled." && break ;;
         *    ) clear && echo "(!) Please use only Y or N" ;;
       esac
@@ -36,11 +41,12 @@ install_go() {
     while :
     do
       echo ""
+      echo ""
       echo -en "Go ${GO_VERSION} will be installed. Do you confirm? [y/n] "
       read answer
       echo ""
       case "$answer" in
-        [yY] ) echo -e "Installation was started.\nPlease do not cancel the operation.\nOtherwise you system can be broke." && break ;;
+        [yY] ) echo -e "Installation was started.\nPlease do not cancel the operation.\nOtherwise your system can be broke." && break ;;
         [nN] ) die "Okay. Update service is cancelled." && break ;;
         *    ) clear && echo "(!) Please use only Y or N" ;;
       esac
