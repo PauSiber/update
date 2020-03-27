@@ -223,4 +223,7 @@ func clear() {
   cmd := exec.Command("clear")
   cmd.Stdout = os.Stdout
   cmd.Run()
+  cmd = exec.Command("printf", "\\e[3J")
+  cmd.Stdout = os.Stdout
+  cmd.Run()
 }
