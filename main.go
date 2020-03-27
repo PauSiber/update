@@ -68,7 +68,7 @@ func update(jsonData JsonData, lastUpdate LastUpdate) {
         break out
       case "n", "N":
         fmt.Println("\nOkay. Update service is cancelled.")
-        os.Exit(1)
+        os.Exit(0)
       default:
         clear()
         fmt.Println("(!) Please use only Y or N")
@@ -121,7 +121,7 @@ func upgrade(updates []Update, codeFlag bool) {
         break out
       case "n", "N":
         fmt.Println("\nOkay. Update service is cancelled.")
-        os.Exit(1)
+        os.Exit(0)
       default:
         clear()
         fmt.Println("(!) Please use only Y, N or S")
@@ -176,7 +176,7 @@ func readLastUpdate(lastUpdate *LastUpdate) {
   data, err := ioutil.ReadFile("./updates/last_update.json")
   if err != nil {
     // Creates json file if it do not exist.
-    // lastUpdate.Value = -1
+    lastUpdate.Value = -1
     lastUpdate.Time = time.Now()
     lastUpdateJson, _ := json.MarshalIndent(lastUpdate, "", "  ")
     ioutil.WriteFile("./updates/last_update.json", lastUpdateJson, 0644)
