@@ -79,7 +79,7 @@ func update(jsonData JsonData, lastUpdate LastUpdate) {
     fmt.Println("All updates are done.\nYour system is up to date.")
   } else {
     banner()
-    fmt.Printf("Last update time: \"%v\" \n", lastUpdate.Time.Format("January 2, 2006, 15:04"))
+    fmt.Printf("Last update time: \"%v\" \n", lastUpdateTime)
     fmt.Printf("You have %v new updates.\n", jsonLastUpdate - lastUpdate.Value)
     fmt.Println("System is up to date.")
   }
@@ -99,14 +99,21 @@ func upgrade(updates []Update, codeFlag bool) {
 
       if codeFlag {
         showMeCode("updates/" + update.FileName)
-        codeFlag = false
       }
-      fmt.Printf("\nDo you want to run this upgration? [S/Y/N] ")
+      if codeFlag {
+        fmt.Printf("\nDo you want to run this upgration? [Y/N/S(close code)] ")
+      } else {
+        fmt.Printf("\nDo you want to run this upgration? [Y/N/S(show code)] ")
+      }
       var answer string
       fmt.Scan(&answer)
       switch answer {
       case "s", "S":
-        codeFlag = true
+        if codeFlag {
+          codeFlag = false
+        } else {
+          codeFlag = true
+        }
         lastCountValue = i
         break cancel
       case "y", "Y":
@@ -116,7 +123,7 @@ func upgrade(updates []Update, codeFlag bool) {
         os.Exit(1)
       default:
         clear()
-        fmt.Println("(!) Please use only Y or N")
+        fmt.Println("(!) Please use only Y, N or S")
       }
     }
 
@@ -133,9 +140,7 @@ func upgrade(updates []Update, codeFlag bool) {
     fmt.Printf("\n[ Push enter to continue ] ")
     fmt.Scanln()
   }
-  if codeFlag {
-    upgrade(updates[lastCountValue:], true)
-  }
+  upgrade(updates[lastCountValue:], codeFlag)
 }
 
 func showMeCode(path string) {
