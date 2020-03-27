@@ -47,6 +47,7 @@ main() {
        --title "Update - PauSiber Dev" \
        --hide-menubar \
        --hide-toolbar \
+       --geometry 100x25+40+100 \
        -e "./go.sh" \
        --hold
 }

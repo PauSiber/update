@@ -10,6 +10,7 @@ import (
   "bufio"
   "io/ioutil"
   "encoding/json"
+  "github.com/fatih/color"
 )
 
 type JsonData struct {
@@ -86,16 +87,16 @@ func update(jsonData JsonData, lastUpdate LastUpdate) {
 }
 
 func upgrade(updates []Update, codeFlag bool) {
-  lastCountValue := 0
   cancel:
   for i, update := range updates {
     clear()
     out:
     for {
       banner()
-      fmt.Printf("Name: %v\nDescription: %v\nPublish Time: %v\n", update.Name,
-                                                                  update.Description,
-                                                                  update.PublishTime.Format("January 2, 2006, 15:04"))
+      r := color.New(color.FgRed).SprintFunc()
+      fmt.Printf("Name: %v\nDescription: %v\nPublish Time: %v\n", r(update.Name),
+                                                                  r(update.Description),
+                                                                  r(update.PublishTime.Format("January 2, 2006, 15:04")))
 
       if codeFlag {
         showMeCode("updates/" + update.FileName)
@@ -114,7 +115,7 @@ func upgrade(updates []Update, codeFlag bool) {
         } else {
           codeFlag = true
         }
-        lastCountValue = i
+        upgrade(updates[i:], codeFlag)
         break cancel
       case "y", "Y":
         break out
@@ -140,7 +141,6 @@ func upgrade(updates []Update, codeFlag bool) {
     fmt.Printf("\n[ Push enter to continue ] ")
     fmt.Scanln()
   }
-  upgrade(updates[lastCountValue:], codeFlag)
 }
 
 func showMeCode(path string) {
@@ -150,15 +150,17 @@ func showMeCode(path string) {
   }
   defer file.Close()
 
-  fmt.Println("\n\t -----------")
-  fmt.Println("\t|  Code:")
-  fmt.Println("\t|")
+  r := color.New(color.FgRed)
+
+  r.Println("\n\t -----------")
+  r.Println("\t|  Code:")
+  r.Println("\t|")
   scanner := bufio.NewScanner(file)
   for scanner.Scan() {
-    fmt.Println("\t|\t" + scanner.Text())
+    fmt.Println("\t"+ r.Sprintf("|") +"\t" + scanner.Text())
   }
-  fmt.Println("\t|")
-  fmt.Println("\t -----------")
+  r.Println("\t|")
+  r.Println("\t -----------")
 }
 
 func writeLastUpdate(id int) {
@@ -193,13 +195,19 @@ func readJsonData(jsonData *JsonData) {
 }
 
 func banner() {
-  banner := `  ____   _   _   _ ____ ___ ____  _____ ____       ____  _______     __` + "\n" +
-            ` |  _ \ / \ | | | / ___|_ _| __ )| ____|  _ \     |  _ \| ____\ \   / /` + "\n" +
-            ` | |_) / _ \| | | \___ \| ||  _ \|  _| | |_) |    | | | |  _|  \ \ / /` + "\n" +
-            ` |  __/ ___ \ |_| |___) | || |_) | |___|  _ <     | |_| | |___  \ V /` + "\n" +
-            ` |_| /_/   \_\___/|____/___|____/|_____|_| \_\    |____/|_____|  \_/` + "\n"
+  c := color.New(color.FgGreen)
+  y := color.New(color.FgYellow).SprintFunc()
+  fmt.Println("\n --------------------------------------------------------------------------")
+  banner := `|    ____   _   _   _ ____ ___ ____  _____ ____   ` + y(`  ____  _______     __`) + "   |\n" +
+            `|   |  _ \ / \ | | | / ___|_ _| __ )| ____|  _ \  ` + y(` |  _ \| ____\ \   / /`) + "   |\n" +
+            `|   | |_) / _ \| | | \___ \| ||  _ \|  _| | |_) | ` + y(` | | | |  _|  \ \ / /`) + "    |\n" +
+            `|   |  __/ ___ \ |_| |___) | || |_) | |___|  _ <  ` + y(` | |_| | |___  \ V /`) + "     |\n" +
+            `|   |_| /_/   \_\___/|____/___|____/|_____|_| \_\ ` + y(` |____/|_____|  \_/`) + "      |\n|\t\t\t\t\t\t\t\t\t   |"
   fmt.Println(banner)
-  fmt.Printf("\t\t\t- Update Service %v - \n\n", version())
+  fmt.Printf("|\t\t\t\t\t\t\t\t\t   |\n|")
+  c.Printf("\t\t\t- Update Service %v - \t\t", version())
+  fmt.Printf("\t   |\n")
+  fmt.Println(" --------------------------------------------------------------------------\n")
 }
 
 func version() string {
