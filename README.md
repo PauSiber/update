@@ -28,7 +28,7 @@ systemctl start update_dev.service
 
 ## Usage
 
-[![usage-video](usage.jpg)](https://www.youtube.com/watch?v=VgaM_Ejru6o)
+[![usage-video](usage.jpg)](https://youtu.be/jIK7JBmJV_4)
 
 ## How to send updates?
 
