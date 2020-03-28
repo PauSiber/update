@@ -14,7 +14,8 @@ success() {
 
 main() {
   cp ./.update/updates/_files/1_conio.h /usr/include/conio.h
-  success "Added conio library to system.\nYou can use getch and getche methods now."
+  echo "Added conio library to system."
+  success "You can use getch and getche methods now."
 }
 
 cd ${WORKING_DIRECTORY}
