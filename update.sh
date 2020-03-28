@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 WORKING_DIRECTORY="/home/dev/.update/"
-GIT_REPO_ADDRESS="https://github.com/boratanrikulu/update.git"
+GIT_REPO_ADDRESS="https://github.com/pausiber/update.git"
 
 die() {
   echo "$*" >&2
