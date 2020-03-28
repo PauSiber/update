@@ -35,16 +35,22 @@ do_you_confirm() {
   done
 }
 
+push_enter() {
+  echo ""
+  echo -e "Installation was completed."
+  echo -e $1
+  echo ""
+  echo -e "[ Push enter to continue ] "
+  read answer
+}
+
 install_go() {
   # Installs GVM if it is not.
   if [[ ! -s "/home/dev/.gvm/" ]]; then
     do_you_confirm "Gvm will be installed."
     zsh < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) >/dev/null 2>&1
     source /home/dev/.gvm/scripts/gvm
-    echo -e "Installation was completed."
-    echo -e `gvm version`
-    echo -e "[enter]"
-    read answer
+    push_enter `gvm version`
     clear_screen
   fi
 
@@ -54,10 +60,7 @@ install_go() {
     do_you_confirm "Go ${GO_VERSION} will be installed."
     gvm install go${GO_VERSION} -B >/dev/null 2>&1
     gvm use go${GO_VERSION} --default >/dev/null 2>&1
-    echo -e "Installation was completed."
-    echo -e `go version`
-    echo -e "[enter]"
-    read answer
+    push_enter `go version`
     clear_screen
   fi
 }
