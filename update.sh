@@ -47,10 +47,8 @@ main() {
     exit 0
   fi
 
-  # Gives executable permission to user to run "go.sh".
-  if [[ -s "go.sh" ]]; then
-    chmod u+x go.sh
-  else
+  # Check if there is "go.sh".
+  if [[ ! -s "go.sh" ]]; then
     die "There is no go installation script."
   fi
 
