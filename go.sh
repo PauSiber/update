@@ -18,6 +18,12 @@ do_you_confirm() {
   do
     echo ""
     echo ""
+    echo "Installing Update System..."
+    sleep 1
+    echo ""
+    echo -e "Update system needs go environment."
+    echo ""
+    echo ""
     echo -en "$1 Do you confirm? [y/n] "
     read answer
     echo ""
@@ -32,12 +38,6 @@ do_you_confirm() {
 install_go() {
   # Installs GVM if it is not.
   if [[ ! -s "/home/dev/.gvm/" ]]; then
-    echo ""
-    echo ""
-    echo "Installing Update System..."
-    sleep 3
-    echo ""
-    echo -e "Update system needs go environment."
     do_you_confirm "Gvm will be installed."
     zsh < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) >/dev/null 2>&1
     source /home/dev/.gvm/scripts/gvm
