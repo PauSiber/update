@@ -17,7 +17,7 @@ You will be getting updates from PauSiber team..
 ## Installation
 
 **Hey!**  
-If you have already PauSiber Dev.  
+If you have already [**PauSiber Dev**](https://dev.pausiber.xyz/).  
 Do not worry.
 
 You already have the update system.
@@ -28,7 +28,7 @@ systemctl start update_dev.service
 
 ## Usage
 
-// Todo
+[![usage-video](usage.jpg)](https://www.youtube.com/watch?v=VgaM_Ejru6o)
 
 ## To-Do
 
