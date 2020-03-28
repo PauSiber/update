@@ -94,6 +94,7 @@ func upgrade(updates []Update, codeFlag bool) {
     for {
       banner()
       r := color.New(color.FgRed).SprintFunc()
+      fmt.Printf("# %v/%v #\n", i+1, len(updates))
       fmt.Printf("Name: %v\nDescription: %v\nPublish Time: %v\n", r(update.Name),
                                                                   r(update.Description),
                                                                   r(update.PublishTime.Format("January 2, 2006, 15:04")))
