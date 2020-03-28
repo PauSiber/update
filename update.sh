@@ -29,6 +29,8 @@ main() {
     # Pulls it if the repo is already cloned.
     git pull
   fi
+  # Changes permission for system files.
+  chown dev:users -R ${WORKING_DIRECTORY}
   clear_screen
 
   # If update_dev.service is not created yet then this script must run by root user.
@@ -37,8 +39,6 @@ main() {
     mkdir -p /home/dev/.local/share/systemd/user
     cp update_dev.service /home/dev/.local/share/systemd/user/update_dev.service
     chown dev:users -R /home/dev/.local/share/systemd/
-    # Changes permission for system files.
-    chown dev:users -R ${WORKING_DIRECTORY}
     sudo -u dev XDG_RUNTIME_DIR=/run/user/1000 systemctl --user enable update_dev.service \
                                                         || die "Error eccur while enabling service."
     systemctl disable update_dev.service

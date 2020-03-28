@@ -2,5 +2,20 @@
   "authority": "PauSiber Community",
   "name": "PauSiber Dev",
   "version": "2.0",
-  "updates": []
+  "updates": [
+    {
+      "id": 0,
+      "name": "Fix typo on bashrc and zshrc.",
+      "description": "Fix \"opn\" to \"open\" on zshrc and bashrc",
+      "fileName": "0_fix_typo_on_bashrc_and_zshrc.sh",
+      "publishTime": "2020-03-28T20:20:00Z"
+    },
+    {
+      "id": 1,
+      "name": "Add conio library.",
+      "description": "Add conio library to use getch and gethce functions.",
+      "fileName": "1_add_conio_library.sh",
+      "publishTime": "2020-03-28T20:40:00Z"
+    }
+  ]
 }
