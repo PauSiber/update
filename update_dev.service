@@ -1,0 +1,10 @@
+[Unit]
+Description=Start update script after login.
+
+[Service]
+Type=simple
+TimeoutStartSec=10
+ExecStart=/bin/bash /usr/local/bin/update_dev.sh
+
+[Install]
+WantedBy=default.target
