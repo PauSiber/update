@@ -11,6 +11,7 @@ import (
   "io/ioutil"
   "encoding/json"
   "github.com/fatih/color"
+  "github.com/dustin/go-humanize/english"
 )
 
 type JsonData struct {
@@ -53,13 +54,14 @@ func update(jsonData JsonData, lastUpdate LastUpdate) {
     lastUpdateTime = lastUpdate.Time.Format("January 2, 2006, 15:04")
   }
 
+  newUpdateCount := jsonLastUpdate - lastUpdate.Value
   if lastUpdate.Value < jsonLastUpdate {
     clear()
     out:
     for {
       banner()
       fmt.Printf("Last update time: \"%v\" \n", lastUpdateTime)
-      fmt.Printf("You have %v new updates.\n", jsonLastUpdate - lastUpdate.Value)
+      fmt.Printf("You have %v new %v\n", newUpdateCount, english.PluralWord(newUpdateCount, "update", ""))
       fmt.Printf("\nDo you want to upgrade your system? [Y/N] ")
       var answer string
       fmt.Scan(&answer)
