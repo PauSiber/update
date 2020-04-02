@@ -10,7 +10,6 @@ import (
 	"os/exec"
 	"strings"
 	"time"
-
 	"github.com/dustin/go-humanize/english"
 	"github.com/fatih/color"
 )
