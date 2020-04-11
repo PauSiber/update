@@ -16,6 +16,13 @@
       "description": "Add conio library to use getch and gethce functions.",
       "fileName": "1_add_conio_library.sh",
       "publishTime": "2020-03-28T20:40:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Add NodeJS env.",
+      "description": "Add NodeJS env with pacman.",
+      "fileName": "2_add_nodejs_env.sh",
+      "publishTime": "2020-04-11T11:30:00Z"
     }
   ]
 }
