@@ -13,7 +13,7 @@ success() {
 }
 
 main() {
-  pacman -S nodejs npm
+  pacman -S --noconfirm nodejs npm
   echo "NodeJS and npm installed to system."
   success "You can use NodeJS on your terminal."
 }
