@@ -23,6 +23,13 @@
       "description": "Add NodeJS env with pacman.",
       "fileName": "2_add_nodejs_env.sh",
       "publishTime": "2020-04-11T11:30:00Z"
+    },
+    {
+      "id": 3,
+      "name": "Add Pyenv library.",
+      "description": "Add Pyenv library to switch between Python versions.",
+      "fileName": "3_add_pyenv_library.sh",
+      "publishTime": "2020-10-9T01:45:00Z"
     }
   ]
 }
